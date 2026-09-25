@@ -146,9 +146,11 @@ async function runTests() {
     start.setDate(today.getDate() + 10);
     const end = new Date(today);
     end.setDate(today.getDate() + 13);
+    const availableCars = await makeRequest(`/api/cars?startDate=${start.toISOString().split('T')[0]}&endDate=${end.toISOString().split('T')[0]}`);
+    const bookingCar = availableCars.body.data?.[0] || sampleCar;
 
     const bookingRes = await makeRequest('/api/bookings', 'POST', {
-      carId: sampleCar._id,
+      carId: bookingCar._id,
       startDate: start.toISOString().split('T')[0],
       endDate: end.toISOString().split('T')[0],
     }, renterToken);
@@ -166,7 +168,7 @@ async function runTests() {
     // 7. Host Approves Booking
     console.log('\n7️⃣ Testing Host Booking Acceptance');
     // Find the car's actual host email or use admin/host token
-    const carDetails = await makeRequest(`/api/cars/${sampleCar._id}`);
+    const carDetails = await makeRequest(`/api/cars/${bookingCar._id}`);
     const hostEmail = carDetails.body.data?.host?.email || 'host@rentpeer.com';
     const specificHostLogin = await makeRequest('/api/auth/login', 'POST', {
       email: hostEmail,
@@ -192,7 +194,7 @@ async function runTests() {
       returnOdometer: 16250,
       returnFuelLevel: '95%',
       returnNotes: 'Vehicle returned in flawless condition.',
-    }, hostToken);
+    }, activeHostToken);
     assert(completeRes.status === 200 && completeRes.body.data.status === 'completed', 'Trip completed -> earnings released to host');
 
     // 10. Verified Review Submission
