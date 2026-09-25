@@ -66,7 +66,7 @@ const CarsController = {
     if (priceSlider && priceDisplay) {
       priceSlider.addEventListener('input', (e) => {
         const val = e.target.value;
-        priceDisplay.textContent = `$${val}`;
+        priceDisplay.textContent = API.formatMoney(val);
         State.setFilters({ maxPrice: val });
       });
       priceSlider.addEventListener('change', () => this.loadCars());
@@ -161,7 +161,7 @@ const CarsController = {
     const isElectric = car.fuelType === 'Electric';
     const hp = car.specs?.horsepower || 300;
     const accel = car.specs?.acceleration || '4.5s';
-    const rangeOrMpg = car.specs?.fuelEconomyOrRange || (isElectric ? '300 mi' : '25 MPG');
+    const rangeOrMpg = car.specs?.fuelEconomyOrRange || (isElectric ? '480 km' : '8 L/100 km');
 
     return `
       <div class="car-card fade-in" id="car-card-${car._id}">
@@ -185,7 +185,7 @@ const CarsController = {
           </div>
           <div class="car-card-location">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>${car.location?.city || 'San Francisco'}, ${car.location?.state || 'CA'}</span>
+            <span>${car.location?.city || 'Lagos'}, ${car.location?.state || 'Lagos'}</span>
             <span class="badge badge-green" style="font-size: 0.65rem; padding: 0.15rem 0.4rem; margin-left: auto;">Verified Host</span>
           </div>
 
@@ -195,7 +195,7 @@ const CarsController = {
               <span class="spec-val">${hp} HP</span>
             </div>
             <div class="spec-item">
-              <span class="spec-label">0-60 MPH</span>
+                <span class="spec-label">0-100 km/h</span>
               <span class="spec-val">${accel}</span>
             </div>
             <div class="spec-item">
@@ -206,7 +206,7 @@ const CarsController = {
 
           <div class="car-card-footer">
             <div class="car-card-price">
-              <div class="price-daily">$${car.dailyRate} <span>/ day</span></div>
+              <div class="price-daily">${API.formatMoney(car.dailyRate)} <span>/ day</span></div>
               <div class="price-total-estimate">No hidden counter fees</div>
             </div>
             <button class="btn btn-primary btn-sm" id="view-car-btn-${car._id}">
@@ -364,7 +364,7 @@ const CarsController = {
           <div class="price-breakdown-box">
             <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.25rem;">
               <div style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-heading); color: var(--text-main);">
-                $${car.dailyRate} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/ day</span>
+                ${API.formatMoney(car.dailyRate)} <span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/ day</span>
               </div>
               <span class="badge badge-green">Escrow Protected</span>
             </div>
@@ -381,24 +381,24 @@ const CarsController = {
 
             <div style="border-top: 1px solid var(--border-subtle); margin: 1.25rem 0; padding-top: 1rem;">
               <div class="price-row">
-                <span id="calc-days-label">$${car.dailyRate} × 3 days</span>
-                <span id="calc-subtotal" style="font-weight: 600; color: var(--text-main);">$${car.dailyRate * 3}</span>
+                <span id="calc-days-label">${API.formatMoney(car.dailyRate)} × 3 days</span>
+                <span id="calc-subtotal" style="font-weight: 600; color: var(--text-main);">${API.formatMoney(car.dailyRate * 3)}</span>
               </div>
               <div class="price-row">
                 <span>Intermediary Service Fee (15%)</span>
-                <span id="calc-fee" style="font-weight: 600; color: var(--text-main);">$${Math.round(car.dailyRate * 3 * 0.15)}</span>
+                <span id="calc-fee" style="font-weight: 600; color: var(--text-main);">${API.formatMoney(Math.round(car.dailyRate * 3 * 0.15))}</span>
               </div>
               <div class="price-row">
                 <span>Basic Roadside & Trip Protection</span>
-                <span id="calc-insurance" style="font-weight: 600; color: var(--text-main);">$45</span>
+                <span id="calc-insurance" style="font-weight: 600; color: var(--text-main);">${API.formatMoney(15000)}</span>
               </div>
               <div class="price-row">
                 <span>Refundable Security Deposit</span>
-                <span id="calc-deposit" style="font-weight: 600; color: var(--text-main);">$${car.securityDeposit || 200}</span>
+                <span id="calc-deposit" style="font-weight: 600; color: var(--text-main);">${API.formatMoney(car.securityDeposit || 50000)}</span>
               </div>
               <div class="price-row total">
                 <span>Total Amount (Escrow)</span>
-                <span id="calc-total" style="color: var(--primary);">$${car.dailyRate * 3 + Math.round(car.dailyRate * 3 * 0.15) + 45 + (car.securityDeposit || 200)}</span>
+                <span id="calc-total" style="color: var(--primary);">${API.formatMoney(car.dailyRate * 3 + Math.round(car.dailyRate * 3 * 0.15) + 15000 + (car.securityDeposit || 50000))}</span>
               </div>
             </div>
 
@@ -429,16 +429,16 @@ const CarsController = {
       const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
       const sub = car.dailyRate * diffDays;
       const fee = Math.round(sub * 0.15);
-      const ins = 15 * diffDays;
-      const dep = car.securityDeposit || 200;
+      const ins = 5000 * diffDays;
+      const dep = car.securityDeposit || 50000;
       const total = sub + fee + ins + dep;
 
-      document.getElementById('calc-days-label').textContent = `$${car.dailyRate} × ${diffDays} day${diffDays > 1 ? 's' : ''}`;
-      document.getElementById('calc-subtotal').textContent = `$${sub}`;
-      document.getElementById('calc-fee').textContent = `$${fee}`;
-      document.getElementById('calc-insurance').textContent = `$${ins}`;
-      document.getElementById('calc-deposit').textContent = `$${dep}`;
-      document.getElementById('calc-total').textContent = `$${total}`;
+      document.getElementById('calc-days-label').textContent = `${API.formatMoney(car.dailyRate)} × ${diffDays} day${diffDays > 1 ? 's' : ''}`;
+      document.getElementById('calc-subtotal').textContent = API.formatMoney(sub);
+      document.getElementById('calc-fee').textContent = API.formatMoney(fee);
+      document.getElementById('calc-insurance').textContent = API.formatMoney(ins);
+      document.getElementById('calc-deposit').textContent = API.formatMoney(dep);
+      document.getElementById('calc-total').textContent = API.formatMoney(total);
     };
 
     startDateInput.addEventListener('change', () => {
@@ -491,15 +491,15 @@ const CarsController = {
       category: 'All',
       transmission: 'All',
       fuelType: 'All',
-      maxPrice: 600,
+      maxPrice: 500000,
       sort: 'recommended',
       search: '',
     });
     const slider = document.getElementById('filter-price-slider');
     const display = document.getElementById('price-slider-display');
     const keyword = document.getElementById('search-keyword');
-    if (slider) slider.value = 600;
-    if (display) display.textContent = '$600';
+    if (slider) slider.value = 500000;
+    if (display) display.textContent = API.formatMoney(500000);
     if (keyword) keyword.value = '';
     const chips = document.querySelectorAll('.category-chip');
     chips.forEach((c) => c.classList.toggle('active', c.dataset.category === 'All'));

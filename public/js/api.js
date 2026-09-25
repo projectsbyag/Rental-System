@@ -5,6 +5,14 @@
 const API = {
   baseURL: '',
 
+  formatMoney(amount) {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      maximumFractionDigits: 0,
+    }).format(Number(amount) || 0);
+  },
+
   getToken() {
     return localStorage.getItem('rentpeer_token') || '';
   },

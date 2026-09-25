@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RentPeer — Web-Based Peer-to-Peer Car Rental Platform</title>
-  <meta name="description" content="RentPeer is a modern peer-to-peer car rental platform connecting vehicle owners with renters. Featuring intermediary agency verification, escrow payments, and comprehensive insurance." />
+  <title>RentPeer Nigeria — Car Rental Made Simple</title>
+  <meta name="description" content="RentPeer Nigeria connects you with verified local car owners in Lagos, Abuja and Port Harcourt. See the full price in naira before you book." />
   
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="/css/main.css" />
@@ -26,7 +26,7 @@
           <polyline points="2 12 12 17 22 12"></polyline>
         </svg>
         <span>RentPeer</span>
-        <span class="brand-badge">P2P Escrow</span>
+        <span class="brand-badge">Nigeria</span>
       </a>
 
       <!-- Primary Nav Links -->
@@ -97,34 +97,34 @@
       <div class="container">
         <div class="hero-tag">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-          <span>100% Intermediary Agency Verified & Escrow Protected</span>
+          <span>Verified cars. Clear prices. Secure payments.</span>
         </div>
 
         <h1 class="hero-title">
-          Drive the Exceptional.<br />
-          <span class="gradient-text">Rent Directly From Verified Local Hosts.</span>
+          Find a car that fits your day.<br />
+          <span class="gradient-text">Rent from verified owners across Nigeria.</span>
         </h1>
 
         <p class="hero-subtitle">
-          Skip standard rental counters. Experience pristine electric cars, sports coupes, and luxury SUVs with zero markup and 100% deposit escrow guarantee.
+          Choose a clean, inspected car near you. See your total in naira upfront, book in a few steps, and drive with confidence.
         </p>
 
         <div class="hero-highlights">
           <div class="highlight-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Verified Driver KYC</span>
+            <span>Verified drivers</span>
           </div>
           <div class="highlight-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Inspected Vehicle Safety</span>
+            <span>Inspected cars</span>
           </div>
           <div class="highlight-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>Custody Escrow Payments</span>
+            <span>Secure payments</span>
           </div>
           <div class="highlight-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>$0 Hidden Surcharges</span>
+            <span>No hidden charges</span>
           </div>
         </div>
 
@@ -132,18 +132,17 @@
         <div class="search-widget-container">
           <form class="search-form" id="hero-search-form">
             <div class="search-field">
-              <span class="search-field-label">📍 Pickup Location</span>
+              <span class="search-field-label">📍 Pickup city</span>
               <select id="search-city" class="search-field-input">
-                <option value="">All Metros</option>
-                <option value="San Francisco">San Francisco, CA</option>
-                <option value="Los Angeles">Los Angeles, CA</option>
-                <option value="Miami">Miami, FL</option>
-                <option value="New York">New York, NY</option>
-                <option value="Seattle">Seattle, WA</option>
-                <option value="Austin">Austin, TX</option>
-                <option value="Chicago">Chicago, IL</option>
-                <option value="Las Vegas">Las Vegas, NV</option>
-                <option value="San Diego">San Diego, CA</option>
+                <option value="">All cities</option>
+                <option value="Lagos">Lagos</option>
+                <option value="Abuja">Abuja, FCT</option>
+                <option value="Port Harcourt">Port Harcourt, Rivers</option>
+                <option value="Ibadan">Ibadan, Oyo</option>
+                <option value="Benin City">Benin City, Edo</option>
+                <option value="Enugu">Enugu</option>
+                <option value="Kano">Kano</option>
+                <option value="Uyo">Uyo, Akwa Ibom</option>
               </select>
             </div>
 
@@ -208,9 +207,9 @@
           </select>
 
           <div class="price-slider-group">
-            <span>Max Price:</span>
-            <input type="range" id="filter-price-slider" class="price-slider" min="50" max="600" step="10" value="600" />
-            <strong id="price-slider-display" style="color: var(--primary); font-family: var(--font-heading);">$600</strong>
+              <span>Max price:</span>
+            <input type="range" id="filter-price-slider" class="price-slider" min="5000" max="500000" step="5000" value="500000" />
+            <strong id="price-slider-display" style="color: var(--primary); font-family: var(--font-heading);">₦500,000</strong>
           </div>
         </div>
 
@@ -776,24 +775,24 @@
           <div class="wizard-pane" id="wizard-pane-2">
             <div class="grid grid-cols-2 gap-4">
               <div class="form-group">
-                <label class="form-label">Metro City</label>
-                <input type="text" id="new-car-city" class="form-input" placeholder="e.g. San Francisco, Los Angeles" required />
+                <label class="form-label">City</label>
+                <input type="text" id="new-car-city" class="form-input" placeholder="e.g. Lagos, Abuja" required />
               </div>
               <div class="form-group">
                 <label class="form-label">State</label>
-                <input type="text" id="new-car-state" class="form-input" placeholder="e.g. CA, NY, FL" required />
+                <input type="text" id="new-car-state" class="form-input" placeholder="e.g. Lagos, FCT, Rivers" required />
               </div>
               <div class="form-group" style="grid-column: 1/-1;">
                 <label class="form-label">Pickup Address / Neighborhood</label>
                 <input type="text" id="new-car-address" class="form-input" placeholder="e.g. 450 Mission St, SOMA" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Daily Rental Price ($ USD)</label>
-                <input type="number" id="new-car-price" class="form-input" min="20" max="2000" placeholder="125" required />
+                <label class="form-label">Daily rental price (₦)</label>
+                <input type="number" id="new-car-price" class="form-input" min="5000" max="500000" placeholder="25000" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Security Deposit ($ USD)</label>
-                <input type="number" id="new-car-deposit" class="form-input" min="100" max="2500" value="250" />
+                <label class="form-label">Security deposit (₦)</label>
+                <input type="number" id="new-car-deposit" class="form-input" min="10000" max="1000000" value="50000" />
               </div>
             </div>
           </div>
@@ -806,12 +805,12 @@
                 <input type="number" id="new-car-hp" class="form-input" placeholder="350" />
               </div>
               <div class="form-group">
-                <label class="form-label">0-60 MPH Acceleration</label>
+                <label class="form-label">0-100 km/h acceleration</label>
                 <input type="text" id="new-car-accel" class="form-input" placeholder="e.g. 3.8s" />
               </div>
               <div class="form-group">
-                <label class="form-label">Range / Fuel Economy</label>
-                <input type="text" id="new-car-range" class="form-input" placeholder="e.g. 310 mi Range or 28 MPG" />
+                <label class="form-label">Range / fuel economy</label>
+                <input type="text" id="new-car-range" class="form-input" placeholder="e.g. 480 km range or 8 L/100 km" />
               </div>
             </div>
 

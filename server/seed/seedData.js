@@ -27,7 +27,7 @@ const seedDatabase = async () => {
       email: 'admin@rentpeer.com',
       password: 'admin123',
       role: 'admin',
-      phone: '+1 (555) 019-2831',
+      phone: '+234 803 000 0001',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
       bio: 'Chief Operations Officer at RentPeer Intermediary Agency. Overseeing vehicle compliance, trust & safety.',
       kycStatus: 'verified',
@@ -39,11 +39,11 @@ const seedDatabase = async () => {
       email: 'host@rentpeer.com',
       password: 'host123',
       role: 'host',
-      phone: '+1 (555) 342-8910',
+      phone: '+234 803 000 0002',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80',
       bio: 'Automotive enthusiast & verified Superhost. I maintain all vehicles with zero-compromise precision.',
       kycStatus: 'verified',
-      driverLicenseNumber: 'DL-CA-8839201',
+      driverLicenseNumber: 'DL-LAG-8839201',
       rating: 4.95,
       totalTrips: 48,
     });
@@ -53,11 +53,11 @@ const seedDatabase = async () => {
       email: 'elena@rentpeer.com',
       password: 'host123',
       role: 'host',
-      phone: '+1 (555) 782-9014',
+      phone: '+234 803 000 0003',
       avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80',
-      bio: 'Offering premium luxury and EV rentals in Los Angeles & Miami. 100% response rate.',
+      bio: 'Offering premium luxury and EV rentals in Lagos and Abuja. 100% response rate.',
       kycStatus: 'verified',
-      driverLicenseNumber: 'DL-FL-4402918',
+      driverLicenseNumber: 'DL-ABJ-4402918',
       rating: 5.0,
       totalTrips: 32,
     });
@@ -67,11 +67,11 @@ const seedDatabase = async () => {
       email: 'renter@rentpeer.com',
       password: 'renter123',
       role: 'renter',
-      phone: '+1 (555) 890-1234',
+      phone: '+234 803 000 0004',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80',
       bio: 'Tech consultant and frequent business traveler.',
       kycStatus: 'verified',
-      driverLicenseNumber: 'DL-NY-9021844',
+      driverLicenseNumber: 'DL-RIV-9021844',
       rating: 5.0,
       totalTrips: 8,
     });
@@ -81,14 +81,14 @@ const seedDatabase = async () => {
       email: 'sam@rentpeer.com',
       password: 'renter123',
       role: 'renter',
-      phone: '+1 (555) 234-5678',
+      phone: '+234 803 000 0005',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=250&q=80',
       bio: 'Weekend explorer and photography enthusiast.',
       kycStatus: 'pending',
-      driverLicenseNumber: 'DL-TX-5519283',
+      driverLicenseNumber: 'DL-OYO-5519283',
       kycDocuments: {
         idType: 'Driver License',
-        idNumber: 'DL-TX-5519283',
+        idNumber: 'DL-OYO-5519283',
         documentImage: '/uploads/id_placeholder.jpg',
         submittedAt: new Date(Date.now() - 3600000 * 4),
       },
@@ -111,13 +111,13 @@ const seedDatabase = async () => {
         fuelType: 'Electric',
         seats: 5,
         doors: 4,
-        dailyRate: 119,
-        securityDeposit: 250,
+        dailyRate: 35000,
+        securityDeposit: 100000,
         mileageLimitPerDay: 250,
         location: {
           address: '450 Mission St, SOMA',
-          city: 'San Francisco',
-          state: 'CA',
+          city: 'Lagos',
+          state: 'Lagos',
         },
         images: [
           'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1200&q=80',
@@ -151,13 +151,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 4,
         doors: 2,
-        dailyRate: 289,
-        securityDeposit: 600,
+        dailyRate: 90000,
+        securityDeposit: 250000,
         mileageLimitPerDay: 150,
         location: {
           address: '9641 Sunset Blvd, Beverly Hills',
-          city: 'Los Angeles',
-          state: 'CA',
+          city: 'Abuja',
+          state: 'FCT',
         },
         images: [
           'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
@@ -190,13 +190,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 5,
         doors: 4,
-        dailyRate: 395,
-        securityDeposit: 800,
+        dailyRate: 120000,
+        securityDeposit: 300000,
         mileageLimitPerDay: 150,
         location: {
           address: 'Ocean Drive & 8th St, South Beach',
-          city: 'Miami',
-          state: 'FL',
+          city: 'Port Harcourt',
+          state: 'Rivers',
         },
         images: [
           'https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=1200&q=80',
@@ -229,13 +229,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 4,
         doors: 2,
-        dailyRate: 215,
-        securityDeposit: 500,
+        dailyRate: 70000,
+        securityDeposit: 200000,
         mileageLimitPerDay: 200,
         location: {
           address: 'Columbus Circle, Midtown',
-          city: 'New York',
-          state: 'NY',
+          city: 'Ibadan',
+          state: 'Oyo',
         },
         images: [
           'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80',
@@ -268,13 +268,13 @@ const seedDatabase = async () => {
         fuelType: 'Hybrid',
         seats: 5,
         doors: 5,
-        dailyRate: 260,
-        securityDeposit: 500,
+        dailyRate: 85000,
+        securityDeposit: 200000,
         mileageLimitPerDay: 200,
         location: {
           address: 'Pike Place Corridor, Downtown',
-          city: 'Seattle',
-          state: 'WA',
+          city: 'Benin City',
+          state: 'Edo',
         },
         images: [
           'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80',
@@ -307,13 +307,13 @@ const seedDatabase = async () => {
         fuelType: 'Electric',
         seats: 4,
         doors: 4,
-        dailyRate: 310,
-        securityDeposit: 600,
+        dailyRate: 100000,
+        securityDeposit: 250000,
         mileageLimitPerDay: 200,
         location: {
           address: 'Santa Monica Blvd, West Hollywood',
-          city: 'Los Angeles',
-          state: 'CA',
+          city: 'Lagos',
+          state: 'Lagos',
         },
         images: [
           'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
@@ -346,13 +346,13 @@ const seedDatabase = async () => {
         fuelType: 'Hybrid',
         seats: 5,
         doors: 4,
-        dailyRate: 230,
-        securityDeposit: 450,
+        dailyRate: 75000,
+        securityDeposit: 180000,
         mileageLimitPerDay: 200,
         location: {
           address: 'Congress Ave, Downtown',
-          city: 'Austin',
-          state: 'TX',
+          city: 'Abuja',
+          state: 'FCT',
         },
         images: [
           'https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=1200&q=80',
@@ -385,13 +385,13 @@ const seedDatabase = async () => {
         fuelType: 'Electric',
         seats: 5,
         doors: 4,
-        dailyRate: 79,
-        securityDeposit: 150,
+        dailyRate: 30000,
+        securityDeposit: 75000,
         mileageLimitPerDay: 300,
         location: {
           address: 'Union Square, Downtown',
-          city: 'San Francisco',
-          state: 'CA',
+          city: 'Enugu',
+          state: 'Enugu',
         },
         images: [
           'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?auto=format&fit=crop&w=1200&q=80',
@@ -424,13 +424,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 4,
         doors: 2,
-        dailyRate: 165,
-        securityDeposit: 350,
+        dailyRate: 55000,
+        securityDeposit: 150000,
         mileageLimitPerDay: 200,
         location: {
           address: 'Michigan Ave, The Loop',
-          city: 'Chicago',
-          state: 'IL',
+          city: 'Kano',
+          state: 'Kano',
         },
         images: [
           'https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=1200&q=80',
@@ -463,13 +463,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 2,
         doors: 2,
-        dailyRate: 235,
-        securityDeposit: 500,
+        dailyRate: 80000,
+        securityDeposit: 200000,
         mileageLimitPerDay: 150,
         location: {
           address: 'Las Vegas Blvd, The Strip',
-          city: 'Las Vegas',
-          state: 'NV',
+          city: 'Uyo',
+          state: 'Akwa Ibom',
         },
         images: [
           'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=80',
@@ -502,13 +502,13 @@ const seedDatabase = async () => {
         fuelType: 'Petrol',
         seats: 4,
         doors: 2,
-        dailyRate: 85,
-        securityDeposit: 200,
+        dailyRate: 32000,
+        securityDeposit: 100000,
         mileageLimitPerDay: 250,
         location: {
           address: 'Gaslamp Quarter, Harbor Dr',
-          city: 'San Diego',
-          state: 'CA',
+          city: 'Port Harcourt',
+          state: 'Rivers',
         },
         images: [
           'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1200&q=80',
@@ -542,13 +542,13 @@ const seedDatabase = async () => {
         fuelType: 'Electric',
         seats: 5,
         doors: 4,
-        dailyRate: 135,
-        securityDeposit: 300,
+        dailyRate: 45000,
+        securityDeposit: 120000,
         mileageLimitPerDay: 250,
         location: {
           address: 'Market St, SOMA',
-          city: 'San Francisco',
-          state: 'CA',
+          city: 'Lagos',
+          state: 'Lagos',
         },
         images: [
           'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
@@ -584,7 +584,7 @@ const seedDatabase = async () => {
     const days1 = 3;
     const subtotal1 = teslaCar.dailyRate * days1;
     const fee1 = Math.round(subtotal1 * 0.15);
-    const ins1 = 15 * days1;
+    const ins1 = 5000 * days1;
     const dep1 = teslaCar.securityDeposit;
     const total1 = subtotal1 + fee1 + ins1 + dep1;
 
@@ -650,7 +650,7 @@ const seedDatabase = async () => {
     const days2 = 3;
     const subtotal2 = porscheCar.dailyRate * days2;
     const fee2 = Math.round(subtotal2 * 0.15);
-    const ins2 = 15 * days2;
+    const ins2 = 5000 * days2;
     const dep2 = porscheCar.securityDeposit;
     const total2 = subtotal2 + fee2 + ins2 + dep2;
 

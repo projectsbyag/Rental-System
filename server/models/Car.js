@@ -58,7 +58,7 @@ const carSchema = new mongoose.Schema({
   dailyRate: {
     type: Number,
     required: [true, 'Please set a daily rental price'],
-    min: 15,
+    min: 5000,
   },
   securityDeposit: {
     type: Number,
@@ -66,13 +66,13 @@ const carSchema = new mongoose.Schema({
   },
   mileageLimitPerDay: {
     type: Number,
-    default: 200, // miles or km per day, 0 for unlimited
+    default: 200, // kilometres per day, 0 for unlimited
   },
   location: {
-    address: { type: String, default: 'Downtown Metropark' },
+    address: { type: String, default: 'Ikeja, Lagos' },
     city: { type: String, required: true, trim: true },
-    state: { type: String, default: 'CA' },
-    country: { type: String, default: 'USA' },
+    state: { type: String, default: 'Lagos' },
+    country: { type: String, default: 'Nigeria' },
   },
   images: [{
     type: String,
@@ -83,9 +83,9 @@ const carSchema = new mongoose.Schema({
   }],
   specs: {
     horsepower: { type: Number, default: 300 },
-    acceleration: { type: String, default: '4.5s (0-60 mph)' },
-    fuelEconomyOrRange: { type: String, default: '330 mi' },
-    topSpeed: { type: String, default: '155 mph' },
+    acceleration: { type: String, default: '4.5s (0-100 km/h)' },
+    fuelEconomyOrRange: { type: String, default: '480 km' },
+    topSpeed: { type: String, default: '250 km/h' },
   },
   description: {
     type: String,

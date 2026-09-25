@@ -70,8 +70,8 @@ exports.createBooking = async (req, res) => {
     const dailyRate = car.dailyRate;
     const subtotal = dailyRate * diffDays;
     const serviceFee = Math.round(subtotal * 0.15); // 15% Intermediary Agency commission
-    const insuranceFee = 15 * diffDays; // $15 per day basic protection
-    const securityDeposit = car.securityDeposit || 200;
+    const insuranceFee = 5000 * diffDays; // NGN 5,000 per day basic protection
+    const securityDeposit = car.securityDeposit || 50000;
     const totalAmount = subtotal + serviceFee + insuranceFee + securityDeposit;
 
     const booking = await Booking.create({
@@ -317,7 +317,7 @@ exports.completeTrip = async (req, res) => {
       type: 'refund',
       amount: booking.securityDeposit,
       status: 'completed',
-      description: `Refund of security deposit ($${booking.securityDeposit}) for completed trip #${booking._id}`,
+      description: `Refund of security deposit (${booking.securityDeposit} NGN) for completed trip #${booking._id}`,
     });
 
     res.status(200).json({

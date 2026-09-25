@@ -31,9 +31,9 @@ const AdminController = {
       const res = await API.admin.getMetrics();
       if (res.success && res.data) {
         const d = res.data;
-        document.getElementById('admin-metric-gmv').textContent = `$${(d.totalGMV || 0).toLocaleString()}`;
-        document.getElementById('admin-metric-commission').textContent = `$${(d.totalAgencyCommission || 0).toLocaleString()}`;
-        document.getElementById('admin-metric-escrow').textContent = `$${(d.escrowHeld || 0).toLocaleString()}`;
+        document.getElementById('admin-metric-gmv').textContent = API.formatMoney(d.totalGMV);
+        document.getElementById('admin-metric-commission').textContent = API.formatMoney(d.totalAgencyCommission);
+        document.getElementById('admin-metric-escrow').textContent = API.formatMoney(d.escrowHeld);
         document.getElementById('admin-metric-cars').textContent = `${d.approvedCars || 0} (${d.pendingCars || 0} pending)`;
         document.getElementById('admin-metric-users').textContent = `${d.totalUsers || 0} (${d.pendingKYC || 0} pending KYC)`;
 
@@ -251,7 +251,7 @@ const AdminController = {
               <td>${car.year || ''} ${car.make || ''} ${car.model || 'Vehicle'}</td>
               <td>${b.renter?.name || 'Renter'}</td>
               <td>${b.host?.name || 'Host'}</td>
-              <td><strong style="color:#ffffff;">$${b.totalAmount}</strong> (Fee: $${b.serviceFee})</td>
+              <td><strong style="color:#ffffff;">${API.formatMoney(b.totalAmount)}</strong> (Fee: ${API.formatMoney(b.serviceFee)})</td>
               <td>
                 <span class="badge ${b.status === 'completed' ? 'badge-green' : b.status === 'active' ? 'badge-cyan' : 'badge-gold'}">
                   ${b.status.toUpperCase()}
@@ -303,7 +303,7 @@ const AdminController = {
             <tr>
               <td><code>${tx.referenceId}</code></td>
               <td><span class="badge ${typeColor}">${tx.type.replace('_', ' ').toUpperCase()}</span></td>
-              <td><strong style="color:#ffffff;">$${tx.amount}</strong></td>
+              <td><strong style="color:#ffffff;">${API.formatMoney(tx.amount)}</strong></td>
               <td>${tx.user?.name || 'Platform User'} (${tx.user?.role || 'user'})</td>
               <td style="font-size:0.82rem; color:var(--text-muted);">${tx.description}</td>
               <td style="font-size:0.78rem; color:var(--text-dim);">${date}</td>

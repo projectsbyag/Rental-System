@@ -135,10 +135,10 @@ const HostController = {
             </div>
           </td>
           <td>
-            ${car.location?.city || 'San Francisco'}, ${car.location?.state || 'CA'}
+            ${car.location?.city || 'Lagos'}, ${car.location?.state || 'Lagos'}
           </td>
           <td>
-            <strong style="color: var(--primary);">$${car.dailyRate}</strong> / day
+            <strong style="color: var(--primary);">${API.formatMoney(car.dailyRate)}</strong> / day
           </td>
           <td>
             ${verificationBadge}
@@ -202,7 +202,7 @@ const HostController = {
             <h3 style="font-size: 1.15rem; color: #ffffff;">${renter.name} wants to rent ${car.year} ${car.make} ${car.model}</h3>
 
             <div style="font-size: 0.85rem; color: var(--text-muted);">
-              📅 <strong>${start} → ${end}</strong> (${b.totalDays} Days) • Your Earnings: <strong style="color: var(--accent-green);">$${b.subtotal}</strong> (Held in Escrow: $${b.totalAmount})
+              📅 <strong>${start} → ${end}</strong> (${b.totalDays} Days) • Your earnings: <strong style="color: var(--accent-green);">${API.formatMoney(b.subtotal)}</strong> (Held securely: ${API.formatMoney(b.totalAmount)})
             </div>
           </div>
 
@@ -245,7 +245,7 @@ const HostController = {
       }
     });
 
-    if (grossEarningsEl) grossEarningsEl.textContent = `$${totalEarnings.toLocaleString()}`;
+    if (grossEarningsEl) grossEarningsEl.textContent = API.formatMoney(totalEarnings);
     if (tripsEl) tripsEl.textContent = `${completedTrips}`;
     if (fleetEl) fleetEl.textContent = `${State.hostFleet.length}`;
     if (ratingEl) ratingEl.textContent = `${State.currentUser?.rating ? State.currentUser.rating.toFixed(2) : '5.0'}`;
@@ -336,7 +336,7 @@ const HostController = {
       specs: {
         horsepower: Number(horsepower) || 300,
         acceleration: acceleration || '4.5s (0-60 mph)',
-        fuelEconomyOrRange: fuelEconomy || '300 mi',
+        fuelEconomyOrRange: fuelEconomy || '480 km',
       },
       features,
       vehicleRegistrationNumber: regNumber,

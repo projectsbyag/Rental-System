@@ -80,8 +80,8 @@ const BookingsController = {
     const host = trip.host || {};
     const img = car.images && car.images[0] ? car.images[0] : 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80';
     
-    const start = new Date(trip.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const end = new Date(trip.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const start = new Date(trip.startDate).toLocaleDateString('en-NG', { month: 'short', day: 'numeric', year: 'numeric' });
+    const end = new Date(trip.endDate).toLocaleDateString('en-NG', { month: 'short', day: 'numeric', year: 'numeric' });
 
     let statusBadge = '<span class="badge badge-gold">Pending Host Confirmation</span>';
     if (trip.status === 'confirmed') statusBadge = '<span class="badge badge-cyan">Confirmed • Ready for Pickup</span>';
@@ -112,7 +112,7 @@ const BookingsController = {
           </div>
 
           <div class="trip-financials">
-            Total Escrow: <strong style="color: #ffffff;">$${trip.totalAmount}</strong> (Deposit: $${trip.securityDeposit}) • Status: <span style="color: var(--primary);">${trip.paymentStatus}</span>
+            Total payment: <strong style="color: #ffffff;">${API.formatMoney(trip.totalAmount)}</strong> (Deposit: ${API.formatMoney(trip.securityDeposit)}) • Status: <span style="color: var(--primary);">${trip.paymentStatus}</span>
           </div>
         </div>
 
@@ -317,29 +317,29 @@ const BookingsController = {
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem;">
           <span style="color: var(--text-dim);">Daily Rate:</span>
-          <span>$${trip.dailyRate} / day</span>
+          <span>${API.formatMoney(trip.dailyRate)} / day</span>
         </div>
 
         <div style="border-top: 1px solid var(--border-subtle); margin: 0.8rem 0; padding-top: 0.8rem;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.85rem;">
             <span>Subtotal:</span>
-            <span>$${trip.subtotal}</span>
+            <span>${API.formatMoney(trip.subtotal)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.85rem;">
             <span>Agency Intermediary Fee (15%):</span>
-            <span>$${trip.serviceFee}</span>
+            <span>${API.formatMoney(trip.serviceFee)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.85rem;">
             <span>Basic Roadside Protection:</span>
-            <span>$${trip.insuranceFee}</span>
+            <span>${API.formatMoney(trip.insuranceFee)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-size: 0.85rem;">
             <span>Refundable Deposit:</span>
-            <span>$${trip.securityDeposit}</span>
+            <span>${API.formatMoney(trip.securityDeposit)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.05rem; color: var(--primary); border-top: 1px dashed var(--border-medium); padding-top: 0.6rem; margin-top: 0.6rem;">
             <span>Total Escrow Amount:</span>
-            <span>$${trip.totalAmount}</span>
+            <span>${API.formatMoney(trip.totalAmount)}</span>
           </div>
         </div>
 
