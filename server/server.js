@@ -16,11 +16,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize Database & Seed data
-connectDB().then(() => {
-  seedDatabase();
-});
-
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -63,11 +58,20 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`
+// Start only after the database is ready so the first API request sees seeded data.
+const startServer = async () => {
+  await connectDB();
+  await seedDatabase();
+  app.listen(PORT, () => {
+    console.log(`
 🚀 RentPeer P2P Car Rental Platform Server is running!
 📡 URL: http://localhost:${PORT}
 🚗 Explore vehicles, book trips, manage fleet, and verify documentation.
-  `);
+    `);
+  });
+};
+
+startServer().catch((err) => {
+  console.error('❌ Server startup failed:', err.message);
+  process.exit(1);
 });

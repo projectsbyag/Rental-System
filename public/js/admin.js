@@ -175,7 +175,7 @@ const AdminController = {
                   <img src="${img}" class="table-car-img" />
                   <div>
                     <strong>${c.year} ${c.make} ${c.model}</strong>
-                    <div style="font-size:0.75rem; color:var(--text-dim);">${c.category} • $${c.dailyRate}/day</div>
+                    <div style="font-size:0.75rem; color:var(--text-dim);">${c.category} • ${API.formatMoney(c.dailyRate)}/day</div>
                   </div>
                 </div>
               </td>

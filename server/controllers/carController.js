@@ -74,12 +74,12 @@ exports.getCars = async (req, res) => {
       const reqStart = new Date(startDate);
       const reqEnd = new Date(endDate);
 
-      if (!isNaN(reqStart) && !isNaN(reqEnd)) {
+      if (!isNaN(reqStart) && !isNaN(reqEnd) && reqStart < reqEnd) {
         // Find cars that have confirmed/active bookings overlapping with these dates
         const conflictingBookings = await Booking.find({
           status: { $in: ['confirmed', 'active', 'pending'] },
           $or: [
-            { startDate: { $lte: reqEnd }, endDate: { $gte: reqStart } },
+            { startDate: { $lt: reqEnd }, endDate: { $gt: reqStart } },
           ],
         }).select('car');
 
@@ -87,6 +87,15 @@ exports.getCars = async (req, res) => {
         if (bookedCarIds.length > 0) {
           query._id = { $nin: bookedCarIds };
         }
+
+        query.blockedDates = {
+          $not: {
+            $elemMatch: {
+              startDate: { $lt: reqEnd },
+              endDate: { $gt: reqStart },
+            },
+          },
+        };
       }
     }
 
@@ -120,7 +129,11 @@ exports.getCars = async (req, res) => {
 // @access  Public
 exports.getCarById = async (req, res) => {
   try {
-    const car = await Car.findById(req.params.id)
+    const car = await Car.findOne({
+      _id: req.params.id,
+      isActive: true,
+      verificationStatus: 'approved',
+    })
       .populate('host', 'name email phone avatar bio rating totalTrips kycStatus createdAt');
 
     if (!car) {
@@ -154,6 +167,13 @@ exports.getCarById = async (req, res) => {
 // @access  Private (Host/Admin)
 exports.createCar = async (req, res) => {
   try {
+    if (req.user.kycStatus !== 'verified') {
+      return res.status(403).json({
+        success: false,
+        message: 'Please complete host verification before listing a vehicle.',
+      });
+    }
+
     const carData = { ...req.body, host: req.user.id };
 
     // Parse features if passed as string/JSON

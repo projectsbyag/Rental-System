@@ -131,6 +131,12 @@ const App = {
         userRoleBadge.className = `badge ${user.role === 'admin' ? 'badge-gold' : user.role === 'host' ? 'badge-indigo' : 'badge-cyan'}`;
       }
 
+      const canAccessAdmin = user.role === 'admin';
+      const adminRoleButton = document.getElementById('role-btn-admin');
+      const adminMenuItem = document.getElementById('menu-item-admin');
+      if (adminRoleButton) adminRoleButton.style.display = canAccessAdmin ? '' : 'none';
+      if (adminMenuItem) adminMenuItem.style.display = canAccessAdmin ? '' : 'none';
+
       // Update Renter KYC Status Badge if in view
       this.updateKYCBanner(user);
     } else {
@@ -169,6 +175,16 @@ const App = {
   },
 
   renderView(view) {
+    if (view !== 'explore' && !State.currentUser) {
+      State.setView('explore');
+      return;
+    }
+    if (view === 'admin-dash' && State.currentUser.role !== 'admin') {
+      Toast.error('Only agency administrators can access this portal.');
+      State.setView('explore');
+      return;
+    }
+
     const viewExplore = document.getElementById('view-explore');
     const viewRenter = document.getElementById('view-renter');
     const viewHost = document.getElementById('view-host');

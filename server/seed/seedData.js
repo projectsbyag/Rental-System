@@ -13,12 +13,8 @@ const seedDatabase = async () => {
     // 1. Check if users exist and recreate if needed
     const userCount = await User.countDocuments();
     if (userCount > 0) {
-      await User.deleteMany({});
-      await Car.deleteMany({});
-      await Booking.deleteMany({});
-      await Review.deleteMany({});
-      await Transaction.deleteMany({});
-      console.log('🔄 Re-syncing and re-seeding clean dataset...');
+      console.log('✅ Existing data found. Skipping destructive seed reset.');
+      return;
     }
 
     // 1. Create Core Users

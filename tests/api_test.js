@@ -105,6 +105,9 @@ async function runTests() {
     assert(renterLogin.status === 200 && renterLogin.body.user.role === 'renter', 'Renter authenticated successfully');
     const renterToken = renterLogin.body?.token;
 
+    const roleEscalation = await makeRequest('/api/auth/switch-role', 'POST', { role: 'admin' }, renterToken);
+    assert(roleEscalation.status === 403, 'Renter cannot escalate their account to admin');
+
     // 5. Cars: Get Public Catalog & Filters
     console.log('\n5️⃣ Testing Vehicle Search & Filter Endpoints');
     const allCars = await makeRequest('/api/cars');
@@ -116,6 +119,25 @@ async function runTests() {
     const sampleCar = allCars.body.data[0];
     const singleCar = await makeRequest(`/api/cars/${sampleCar._id}`);
     assert(singleCar.status === 200 && singleCar.body.data.make === sampleCar.make, `Retrieved detailed specs for ${singleCar.body.data.title}`);
+
+    const renterCarCreate = await makeRequest('/api/cars', 'POST', {
+      title: 'Unauthorized Listing',
+      make: 'Test',
+      model: 'Car',
+      year: 2024,
+      category: 'Compact',
+      transmission: 'Automatic',
+      fuelType: 'Petrol',
+      seats: 5,
+      dailyRate: 10000,
+      location: { city: 'Lagos' },
+    }, renterToken);
+    assert(renterCarCreate.status === 403, 'Renter cannot create host vehicle listings');
+
+    const pendingStart = await makeRequest('/api/bookings/507f1f77bcf86cd799439011/start-trip', 'PATCH', {
+      pickupOdometer: 100,
+    }, renterToken);
+    assert(pendingStart.status === 404, 'Unknown booking cannot be started');
 
     // 6. Booking Creation & Pricing/Escrow calculation
     console.log('\n6️⃣ Testing Renter Booking Request Workflow');
@@ -134,6 +156,12 @@ async function runTests() {
     assert(bookingRes.status === 201 && bookingRes.body.data.status === 'pending', 'Created booking request in pending state with escrow held');
     const createdBooking = bookingRes.body.data;
     assert(createdBooking.serviceFee > 0, `Calculated 15% Intermediary Agency Commission ($${createdBooking.serviceFee})`);
+
+    const earlyStart = await makeRequest(`/api/bookings/${createdBooking._id}/start-trip`, 'PATCH', {
+      pickupOdometer: 16000,
+      pickupFuelLevel: '100%',
+    }, renterToken);
+    assert(earlyStart.status === 400, 'Pending booking cannot start before host acceptance');
 
     // 7. Host Approves Booking
     console.log('\n7️⃣ Testing Host Booking Acceptance');

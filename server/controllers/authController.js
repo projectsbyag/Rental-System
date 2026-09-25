@@ -209,6 +209,13 @@ exports.switchRole = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid role' });
     }
 
+    if (role === 'admin' && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Only an existing admin can use the admin portal.' });
+    }
+    if (req.user.role === 'admin' && role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'The admin account cannot switch to a customer role.' });
+    }
+
     const user = await User.findById(req.user.id);
     user.role = role;
     await user.save();

@@ -20,10 +20,27 @@ exports.createBooking = async (req, res) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+      return res.status(400).json({ success: false, message: 'Please provide valid booking dates.' });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (start < today) {
+      return res.status(400).json({ success: false, message: 'Booking start date cannot be in the past.' });
+    }
+
     if (start >= end) {
       return res.status(400).json({
         success: false,
         message: 'End date must be after start date.',
+      });
+    }
+
+    if (req.user.kycStatus !== 'verified') {
+      return res.status(403).json({
+        success: false,
+        message: 'Please complete driver verification before requesting a booking.',
       });
     }
 
@@ -51,7 +68,7 @@ exports.createBooking = async (req, res) => {
       car: car._id,
       status: { $in: ['pending', 'confirmed', 'active'] },
       $or: [
-        { startDate: { $lte: end }, endDate: { $gte: start } },
+            { startDate: { $lt: end }, endDate: { $gt: start } },
       ],
     });
 
@@ -191,6 +208,17 @@ exports.acceptBooking = async (req, res) => {
       });
     }
 
+    const conflict = await Booking.findOne({
+      _id: { $ne: booking._id },
+      car: booking.car._id,
+      status: { $in: ['pending', 'confirmed', 'active'] },
+      startDate: { $lt: booking.endDate },
+      endDate: { $gt: booking.startDate },
+    });
+    if (conflict) {
+      return res.status(409).json({ success: false, message: 'These dates are no longer available.' });
+    }
+
     booking.status = 'confirmed';
     await booking.save();
 
@@ -220,6 +248,10 @@ exports.declineBooking = async (req, res) => {
 
     if (!isHost && !isRenter && !isAdmin) {
       return res.status(403).json({ success: false, message: 'Not authorized' });
+    }
+
+    if (!['pending', 'confirmed'].includes(booking.status)) {
+      return res.status(400).json({ success: false, message: `Cannot cancel booking with status '${booking.status}'.` });
     }
 
     booking.status = isHost ? 'rejected' : 'cancelled';
@@ -257,6 +289,17 @@ exports.startTrip = async (req, res) => {
 
     if (!booking) return res.status(404).json({ success: false, message: 'Booking not found' });
 
+    const isParticipant = [booking.renter.toString(), booking.host.toString()].includes(req.user.id);
+    if (!isParticipant && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorized to start this trip' });
+    }
+    if (booking.status !== 'confirmed') {
+      return res.status(400).json({ success: false, message: `Cannot start booking with status '${booking.status}'.` });
+    }
+    if (Number(pickupOdometer) < 0) {
+      return res.status(400).json({ success: false, message: 'Pickup odometer cannot be negative.' });
+    }
+
     booking.status = 'active';
     booking.handoverDetails.pickupOdometer = Number(pickupOdometer) || 0;
     booking.handoverDetails.pickupFuelLevel = pickupFuelLevel || '100%';
@@ -284,6 +327,17 @@ exports.completeTrip = async (req, res) => {
     const booking = await Booking.findById(req.params.id);
 
     if (!booking) return res.status(404).json({ success: false, message: 'Booking not found' });
+
+    const isParticipant = [booking.renter.toString(), booking.host.toString()].includes(req.user.id);
+    if (!isParticipant && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorized to complete this trip' });
+    }
+    if (booking.status !== 'active') {
+      return res.status(400).json({ success: false, message: `Cannot complete booking with status '${booking.status}'.` });
+    }
+    if (Number(returnOdometer) < booking.handoverDetails.pickupOdometer) {
+      return res.status(400).json({ success: false, message: 'Return odometer cannot be lower than pickup odometer.' });
+    }
 
     booking.status = 'completed';
     booking.paymentStatus = 'released_to_host';
@@ -339,6 +393,17 @@ exports.reportDispute = async (req, res) => {
     const booking = await Booking.findById(req.params.id);
 
     if (!booking) return res.status(404).json({ success: false, message: 'Booking not found' });
+
+    const isParticipant = [booking.renter.toString(), booking.host.toString()].includes(req.user.id);
+    if (!isParticipant && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorized to report an issue for this booking' });
+    }
+    if (!['confirmed', 'active', 'completed'].includes(booking.status)) {
+      return res.status(400).json({ success: false, message: 'Issues can only be reported for an accepted trip.' });
+    }
+    if (booking.dispute.status === 'open') {
+      return res.status(400).json({ success: false, message: 'This booking already has an open issue.' });
+    }
 
     booking.dispute = {
       isDisputed: true,
