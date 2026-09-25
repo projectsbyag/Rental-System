@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RentPeer — Web-Based Peer-to-Peer Car Rental Platform</title>
+  <meta name="description" content="RentPeer is a modern peer-to-peer car rental platform connecting vehicle owners with renters. Featuring intermediary agency verification, escrow payments, and comprehensive insurance." />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/dashboards.css" />
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. Top Navigation Bar
+       ========================================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="container nav-container">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo" id="brand-home-link" onclick="State.setView('explore')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(6,182,212,0.2)"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        <span>RentPeer</span>
+        <span class="brand-badge">P2P Escrow</span>
+      </a>
+
+      <!-- Primary Nav Links -->
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link active" id="nav-explore-btn">Explore Fleet</a></li>
+        <li><a href="#how-it-works" class="nav-link" id="nav-how-btn">How It Works</a></li>
+        <li><a href="#agency-trust" class="nav-link" id="nav-safety-btn">Trust & Agency Escrow</a></li>
+      </ul>
+
+      <!-- Portal / Role Switcher -->
+      <div class="role-switcher" id="role-nav-switcher" style="display: none;">
+        <button class="role-btn role-nav-btn active" id="role-btn-renter" data-role="renter">Renter</button>
+        <button class="role-btn role-nav-btn" id="role-btn-host" data-role="host">Host Portal</button>
+        <button class="role-btn role-nav-btn" id="role-btn-admin" data-role="admin">Agency Admin</button>
+      </div>
+
+      <!-- Auth & Profile Area -->
+      <div class="user-nav-actions">
+        <!-- Guest Actions -->
+        <div id="guest-nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button class="btn btn-outline btn-sm" id="open-auth-modal-btn">
+            Log In / Sign Up
+          </button>
+        </div>
+
+        <!-- Logged In User Profile -->
+        <div class="user-profile-menu" id="user-profile-menu" style="display: none;">
+          <button class="user-avatar-btn" id="user-avatar-btn">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="user-avatar-img" id="header-user-avatar" />
+            <span class="user-name-label" id="header-user-name">User</span>
+            <span class="badge badge-cyan" id="header-user-role-badge" style="font-size: 0.65rem;">RENTER</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          </button>
+
+          <div class="dropdown-menu" id="user-dropdown-menu">
+            <div class="dropdown-header">
+              <div style="font-size: 0.75rem; color: var(--text-dim);">Signed in portal</div>
+              <div style="font-weight: 700; color: var(--primary);">RentPeer Verified Account</div>
+            </div>
+            <a href="#" class="dropdown-item" id="menu-item-renter">
+              🗺️ My Trips & Bookings
+            </a>
+            <a href="#" class="dropdown-item" id="menu-item-host">
+              🚘 Host Fleet Manager
+            </a>
+            <a href="#" class="dropdown-item" id="menu-item-admin">
+              🛡️ Agency Admin Hub
+            </a>
+            <a href="#" class="dropdown-item" id="menu-item-kyc">
+              🪪 Driver ID Verification
+            </a>
+            <div style="border-top: 1px solid var(--border-subtle); margin: 0.25rem 0;"></div>
+            <a href="#" class="dropdown-item text-danger" id="logout-action-btn">
+              🚪 Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: EXPLORE & LANDING PAGE
+       ========================================================================= -->
+  <main id="view-explore" class="fade-in">
+    <!-- Hero Banner -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-tag">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          <span>100% Intermediary Agency Verified & Escrow Protected</span>
+        </div>
+
+        <h1 class="hero-title">
+          Drive the Exceptional.<br />
+          <span class="gradient-text">Rent Directly From Verified Local Hosts.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Skip standard rental counters. Experience pristine electric cars, sports coupes, and luxury SUVs with zero markup and 100% deposit escrow guarantee.
+        </p>
+
+        <div class="hero-highlights">
+          <div class="highlight-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Verified Driver KYC</span>
+          </div>
+          <div class="highlight-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Inspected Vehicle Safety</span>
+          </div>
+          <div class="highlight-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Custody Escrow Payments</span>
+          </div>
+          <div class="highlight-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>$0 Hidden Surcharges</span>
+          </div>
+        </div>
+
+        <!-- Interactive Search Widget -->
+        <div class="search-widget-container">
+          <form class="search-form" id="hero-search-form">
+            <div class="search-field">
+              <span class="search-field-label">📍 Pickup Location</span>
+              <select id="search-city" class="search-field-input">
+                <option value="">All Metros</option>
+                <option value="San Francisco">San Francisco, CA</option>
+                <option value="Los Angeles">Los Angeles, CA</option>
+                <option value="Miami">Miami, FL</option>
+                <option value="New York">New York, NY</option>
+                <option value="Seattle">Seattle, WA</option>
+                <option value="Austin">Austin, TX</option>
+                <option value="Chicago">Chicago, IL</option>
+                <option value="Las Vegas">Las Vegas, NV</option>
+                <option value="San Diego">San Diego, CA</option>
+              </select>
+            </div>
+
+            <div class="search-field">
+              <span class="search-field-label">📅 Start Date</span>
+              <input type="date" id="search-start-date" class="search-field-input" />
+            </div>
+
+            <div class="search-field">
+              <span class="search-field-label">🏁 End Date</span>
+              <input type="date" id="search-end-date" class="search-field-input" />
+            </div>
+
+            <div class="search-field">
+              <span class="search-field-label">🏎️ Category</span>
+              <select id="search-category" class="search-field-input">
+                <option value="All">All Categories</option>
+                <option value="Electric">⚡ Electric</option>
+                <option value="Sports">🏎️ Sports</option>
+                <option value="Luxury">💎 Luxury</option>
+                <option value="SUV">🚙 SUV</option>
+                <option value="Compact">🚗 Compact</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-search" id="hero-search-submit-btn">
+              Search Fleet
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fleet Catalog Section -->
+    <section class="container filter-section" id="explore-section">
+      <!-- Category Filter Chips -->
+      <div class="category-chips">
+        <button class="category-chip active" data-category="All">✨ All Vehicles</button>
+        <button class="category-chip" data-category="Electric">⚡ Electric EVs</button>
+        <button class="category-chip" data-category="Sports">🏎️ Sports & Supercars</button>
+        <button class="category-chip" data-category="Luxury">💎 Executive Luxury</button>
+        <button class="category-chip" data-category="SUV">🚙 Premium SUVs</button>
+        <button class="category-chip" data-category="Compact">🚗 City Compact</button>
+      </div>
+
+      <!-- Advanced Filter Bar -->
+      <div class="advanced-filters-bar">
+        <div class="filter-group">
+          <input type="text" id="search-keyword" class="form-input" placeholder="🔍 Search make, model..." style="width: 200px; padding: 0.5rem 0.85rem; font-size: 0.85rem;" />
+
+          <select id="filter-transmission" class="filter-select">
+            <option value="All">Transmission: Any</option>
+            <option value="Automatic">Automatic</option>
+            <option value="Manual">Manual (Stick Shift)</option>
+          </select>
+
+          <select id="filter-fuel" class="filter-select">
+            <option value="All">Fuel: Any</option>
+            <option value="Electric">100% Electric</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Petrol">Petrol</option>
+          </select>
+
+          <div class="price-slider-group">
+            <span>Max Price:</span>
+            <input type="range" id="filter-price-slider" class="price-slider" min="50" max="600" step="10" value="600" />
+            <strong id="price-slider-display" style="color: var(--primary); font-family: var(--font-heading);">$600</strong>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <span id="cars-count-badge" class="badge badge-cyan">Loading fleet...</span>
+          <select id="filter-sort" class="filter-select">
+            <option value="recommended">Sort: Featured & Recommended</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="rating">Top Rated Hosts</option>
+            <option value="trips">Most Popular Trips</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Car Grid -->
+      <div class="cars-grid" id="cars-grid">
+        <!-- Rendered dynamically by CarsController -->
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="container" id="how-it-works-section" style="padding: 5rem 0 3rem 0;">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">
+        <span class="badge badge-cyan" style="margin-bottom: 0.75rem;">Peer-to-Peer Workflow</span>
+        <h2>How RentPeer Works</h2>
+        <p>Connecting verified vehicle owners with vetted drivers through an authorized intermediary agency for total safety and fair pricing.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-6">
+        <div class="glass-panel" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔍</div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">1. Discover & Book</h3>
+          <p style="font-size: 0.9rem;">Browse verified peer cars in your city. Select dates, check upfront pricing with no hidden fees, and place a booking request.</p>
+        </div>
+        <div class="glass-panel" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛡️</div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">2. Agency Escrow & KYC</h3>
+          <p style="font-size: 0.9rem;">The Intermediary Agency verifies your driver license and holds rental fees in secure escrow until trip completion.</p>
+        </div>
+        <div class="glass-panel" style="padding: 2rem; text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔑</div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">3. Handover & Drive</h3>
+          <p style="font-size: 0.9rem;">Meet your host or use digital check-in. Inspect condition, confirm odometer, and enjoy the road with peace of mind.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intermediary Agency Trust & Safety Section -->
+    <section class="container" id="agency-trust-section" style="padding: 3rem 0 6rem 0;">
+      <div class="glass-panel" style="padding: 3rem; background: #ffffff; border: 1px solid var(--border-medium); box-shadow: var(--shadow-md);">
+        <div class="grid grid-cols-2 gap-8 items-center">
+          <div>
+            <span class="badge badge-gold" style="margin-bottom: 1rem;">Safety & Verification</span>
+            <h2 style="font-size: 2.2rem; margin-bottom: 1rem; color: var(--text-main);">The Intermediary Agency Advantage</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
+              Traditional car rentals are bloated with overhead and excessive counter fees. Pure peer-to-peer sharing often lacks reliability. RentPeer strikes the perfect balance by employing an active Intermediary Agency to oversee every interaction:
+            </p>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.95rem; color: var(--text-main);">
+              <li style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="color: var(--accent-green); font-weight: bold;">✓</span>
+                <span><strong>Driver Verification</strong>: Manual and automated KYC checks for clean driving records.</span>
+              </li>
+              <li style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="color: var(--accent-green); font-weight: bold;">✓</span>
+                <span><strong>Vehicle Documentation</strong>: Host registration, insurance policy, and roadworthiness approvals.</span>
+              </li>
+              <li style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="color: var(--accent-green); font-weight: bold;">✓</span>
+                <span><strong>Escrow Protection</strong>: Renter payments and security deposits are held in trust until return.</span>
+              </li>
+              <li style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="color: var(--accent-green); font-weight: bold;">✓</span>
+                <span><strong>Dispute Mediation</strong>: Independent arbitration for any damage or cancellation claims.</span>
+              </li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); padding: 2.5rem 2rem; text-align: center; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🛡️⚖️</div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">RentPeer Intermediary Trust</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">Every booking is insured, every host is vetted, and every transaction is backed by our escrow guarantee.</p>
+            <button class="btn btn-primary" onclick="AuthController.showModal('register')">
+              Join RentPeer Community
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 2: RENTER PORTAL (TRIPS & RESERVATIONS)
+       ========================================================================= -->
+  <section id="view-renter" class="dashboard-view">
+    <div class="container">
+      <div class="dashboard-header">
+        <div class="dashboard-title-area">
+          <h2>Renter Trip Portal</h2>
+          <p>Manage your active journeys, upcoming reservations, handover check-ins, and escrow receipts.</p>
+        </div>
+        <button class="btn btn-primary" onclick="State.setView('explore')">
+          + Book Another Vehicle
+        </button>
+      </div>
+
+      <!-- KYC Verification Status Banner -->
+      <div class="kyc-status-banner" id="renter-kyc-banner">
+        <div class="kyc-info">
+          <div class="kyc-icon-badge">🪪</div>
+          <div>
+            <h4 style="margin-bottom: 0.2rem;">Driver Credential Verification</h4>
+            <p id="renter-kyc-status-text" style="font-size: 0.88rem; color: var(--text-muted);">
+              Loading verification status...
+            </p>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="renter-kyc-action-btn">
+          Verify Driver License
+        </button>
+      </div>
+
+      <!-- Trips List -->
+      <h3 style="margin-bottom: 1.25rem;">My Trips & Bookings</h3>
+      <div class="trips-container" id="renter-trips-list">
+        <!-- Rendered by BookingsController -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       VIEW 3: HOST DASHBOARD (FLEET & EARNINGS)
+       ========================================================================= -->
+  <section id="view-host" class="dashboard-view">
+    <div class="container">
+      <div class="dashboard-header">
+        <div class="dashboard-title-area">
+          <h2>Host Operations Center</h2>
+          <p>Manage your car listings, accept booking requests, track earnings, and coordinate vehicle returns.</p>
+        </div>
+        <button class="btn btn-primary" id="open-add-car-modal-btn">
+          + List a New Vehicle
+        </button>
+      </div>
+
+      <!-- Host Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="host-metric-earnings">$0</div>
+            <div class="metric-label">Total Host Earnings</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1 .4-1 1v7c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="host-metric-fleet">0</div>
+            <div class="metric-label">Active Listed Cars</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="host-metric-trips">0</div>
+            <div class="metric-label">Trips Completed</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="host-metric-rating">5.0</div>
+            <div class="metric-label">Host Reputation Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incoming Booking Requests -->
+      <h3 style="margin-bottom: 1rem;">Incoming Renter Booking Requests</h3>
+      <div id="host-reservations-list" style="margin-bottom: 3rem;">
+        <!-- Rendered by HostController -->
+      </div>
+
+      <!-- Host Fleet Inventory -->
+      <h3 style="margin-bottom: 1rem;">My Fleet Inventory</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Vehicle</th>
+              <th>Location</th>
+              <th>Daily Rate</th>
+              <th>Agency Verification</th>
+              <th>Listing Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="host-fleet-table-body">
+            <!-- Rendered by HostController -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       VIEW 4: INTERMEDIARY AGENCY (ADMIN) PORTAL
+       ========================================================================= -->
+  <section id="view-admin" class="dashboard-view">
+    <div class="container">
+      <div class="dashboard-header">
+        <div class="dashboard-title-area">
+          <h2>Intermediary Agency Hub</h2>
+          <p>Trust, verification & safety management. Audit driver KYC credentials, inspect listed cars, oversee escrow, and adjudicate disputes.</p>
+        </div>
+        <span class="badge badge-gold" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">
+          🛡️ Agency Operations Officer
+        </span>
+      </div>
+
+      <!-- Agency Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="admin-metric-commission">$0</div>
+            <div class="metric-label">Agency Commission (15%)</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="admin-metric-escrow">$0</div>
+            <div class="metric-label">Escrow Funds in Custody</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="admin-metric-users">0</div>
+            <div class="metric-label">Platform Users & Drivers</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-box metric-icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div class="metric-details">
+            <div class="metric-value" id="admin-metric-gmv">$0</div>
+            <div class="metric-label">Gross Merchandise Value (GMV)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Tabs -->
+      <div class="dash-tabs">
+        <button class="dash-tab-btn admin-nav-tab active" data-tab="kyc">
+          🪪 Driver KYC Queue <span class="tab-badge-count" id="admin-kyc-badge">0</span>
+        </button>
+        <button class="dash-tab-btn admin-nav-tab" data-tab="cars">
+          🚘 Vehicle Fleet Moderation <span class="tab-badge-count" id="admin-car-badge">0</span>
+        </button>
+        <button class="dash-tab-btn admin-nav-tab" data-tab="bookings">
+          📑 All Platform Bookings & Disputes
+        </button>
+        <button class="dash-tab-btn admin-nav-tab" data-tab="transactions">
+          💰 Financial Transactions Ledger
+        </button>
+      </div>
+
+      <!-- Tab 1: Driver KYC Queue -->
+      <div id="admin-pane-kyc">
+        <div class="agency-badge-banner">
+          <span>⚖️</span>
+          <span>Inspect driver documents, verify state licenses, and approve or reject driving credentials.</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User / Driver</th>
+                <th>Role</th>
+                <th>License / ID Number</th>
+                <th>Status</th>
+                <th>Document Inspection</th>
+                <th>Agency Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-kyc-table-body">
+              <!-- Rendered by AdminController -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Vehicle Fleet Moderation Queue -->
+      <div id="admin-pane-cars" style="display: none;">
+        <div class="agency-badge-banner">
+          <span>🛡️</span>
+          <span>Verify vehicle registration, title condition, and insurance policy coverage prior to public listing.</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Host Owner</th>
+                <th>Location</th>
+                <th>Registration & Policy</th>
+                <th>Inspection Status</th>
+                <th>Agency Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-cars-table-body">
+              <!-- Rendered by AdminController -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Bookings & Disputes -->
+      <div id="admin-pane-bookings" style="display: none;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Vehicle</th>
+                <th>Renter</th>
+                <th>Host</th>
+                <th>Escrow Amount</th>
+                <th>Status</th>
+                <th>Escrow Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-bookings-table-body">
+              <!-- Rendered by AdminController -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Financial Transactions -->
+      <div id="admin-pane-transactions" style="display: none;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tx Reference</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>User</th>
+                <th>Description</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="admin-transactions-table-body">
+              <!-- Rendered by AdminController -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MODALS SYSTEM
+       ========================================================================= -->
+
+  <!-- 1. Auth Modal (Login / Register / 1-Click Demo Accounts) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="auth-modal-title">RentPeer Account</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="dash-tabs" style="margin-bottom: 1.5rem;">
+          <button class="dash-tab-btn active" id="auth-tab-login">Sign In</button>
+          <button class="dash-tab-btn" id="auth-tab-register">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form-container">
+          <form id="login-form">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="login-email" class="form-input" placeholder="name@example.com" required value="renter@rentpeer.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" id="login-password" class="form-input" placeholder="••••••••" required value="renter123" />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+              Sign In to RentPeer
+            </button>
+          </form>
+
+          <div style="margin: 1.5rem 0 1rem 0; text-align: center; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+            <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem;">
+              ⚡ Quick 1-Click Demo Logins
+            </div>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+              <button class="btn btn-outline btn-sm" id="demo-login-admin">
+                🛡️ Admin (Agency)
+              </button>
+              <button class="btn btn-outline btn-sm" id="demo-login-host">
+                🚘 Host (Marcus)
+              </button>
+              <button class="btn btn-outline btn-sm" id="demo-login-renter">
+                👤 Renter (Alex)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form-container" style="display: none;">
+          <form id="register-form">
+            <div class="form-group">
+              <label class="form-label">Full Legal Name</label>
+              <input type="text" id="reg-name" class="form-input" placeholder="e.g. Jordan Miller" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="reg-email" class="form-input" placeholder="jordan@example.com" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="reg-phone" class="form-input" placeholder="+1 (555) 000-0000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password (6+ characters)</label>
+              <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required minlength="6" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Account Role</label>
+              <select id="reg-role" class="form-select">
+                <option value="renter">Renter (I want to drive verified peer cars)</option>
+                <option value="host">Car Owner / Host (I want to list my vehicle)</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+              Create Verified Account
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Car Detail & Price Calculator Modal -->
+  <div class="modal-overlay" id="car-detail-modal">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <h3>Vehicle Overview & Booking Request</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body" id="car-detail-modal-content">
+        <!-- Rendered by CarsController -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Add New Car Multi-Step Wizard Modal -->
+  <div class="modal-overlay" id="add-car-modal">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header">
+        <h3>List Your Vehicle for Peer Rental</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Wizard Steps Indicator -->
+        <div class="wizard-steps">
+          <div class="wizard-step active" id="wizard-step-ind-1">
+            <div class="wizard-step-num">1</div>
+            <span class="wizard-step-label">Basic Specs</span>
+          </div>
+          <div class="wizard-step" id="wizard-step-ind-2">
+            <div class="wizard-step-num">2</div>
+            <span class="wizard-step-label">Pricing & City</span>
+          </div>
+          <div class="wizard-step" id="wizard-step-ind-3">
+            <div class="wizard-step-num">3</div>
+            <span class="wizard-step-label">Performance</span>
+          </div>
+          <div class="wizard-step" id="wizard-step-ind-4">
+            <div class="wizard-step-num">4</div>
+            <span class="wizard-step-label">Verification & Photos</span>
+          </div>
+        </div>
+
+        <form id="add-car-form">
+          <!-- Step 1 -->
+          <div class="wizard-pane active" id="wizard-pane-1">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Make (Brand)</label>
+                <input type="text" id="new-car-make" class="form-input" placeholder="e.g. Tesla, BMW, Porsche" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Model</label>
+                <input type="text" id="new-car-model" class="form-input" placeholder="e.g. Model Y, 911, M3" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Manufacture Year</label>
+                <input type="number" id="new-car-year" class="form-input" min="2012" max="2027" value="2024" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="new-car-category" class="form-select">
+                  <option value="Electric">Electric EV</option>
+                  <option value="Luxury">Executive Luxury</option>
+                  <option value="Sports">Sports & Performance</option>
+                  <option value="SUV">SUV & Crossover</option>
+                  <option value="Sedan">Sedan</option>
+                  <option value="Compact">Compact</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Transmission</label>
+                <select id="new-car-trans" class="form-select">
+                  <option value="Automatic">Automatic</option>
+                  <option value="Manual">Manual</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fuel Type</label>
+                <select id="new-car-fuel" class="form-select">
+                  <option value="Electric">Electric</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Petrol">Petrol</option>
+                  <option value="Diesel">Diesel</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Seating Capacity</label>
+                <input type="number" id="new-car-seats" class="form-input" min="2" max="9" value="5" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="wizard-pane" id="wizard-pane-2">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Metro City</label>
+                <input type="text" id="new-car-city" class="form-input" placeholder="e.g. San Francisco, Los Angeles" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">State</label>
+                <input type="text" id="new-car-state" class="form-input" placeholder="e.g. CA, NY, FL" required />
+              </div>
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">Pickup Address / Neighborhood</label>
+                <input type="text" id="new-car-address" class="form-input" placeholder="e.g. 450 Mission St, SOMA" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Daily Rental Price ($ USD)</label>
+                <input type="number" id="new-car-price" class="form-input" min="20" max="2000" placeholder="125" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Security Deposit ($ USD)</label>
+                <input type="number" id="new-car-deposit" class="form-input" min="100" max="2500" value="250" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="wizard-pane" id="wizard-pane-3">
+            <div class="grid grid-cols-3 gap-4" style="margin-bottom: 1.5rem;">
+              <div class="form-group">
+                <label class="form-label">Horsepower (HP)</label>
+                <input type="number" id="new-car-hp" class="form-input" placeholder="350" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">0-60 MPH Acceleration</label>
+                <input type="text" id="new-car-accel" class="form-input" placeholder="e.g. 3.8s" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Range / Fuel Economy</label>
+                <input type="text" id="new-car-range" class="form-input" placeholder="e.g. 310 mi Range or 28 MPG" />
+              </div>
+            </div>
+
+            <label class="form-label" style="margin-bottom: 0.5rem;">Features & Equipment</label>
+            <div class="grid grid-cols-3 gap-2" style="font-size: 0.85rem;">
+              <label><input type="checkbox" class="new-car-feature" value="Autopilot" checked /> Autopilot / Self-Drive</label>
+              <label><input type="checkbox" class="new-car-feature" value="Panoramic Glass Roof" checked /> Panoramic Roof</label>
+              <label><input type="checkbox" class="new-car-feature" value="Apple CarPlay" checked /> Apple CarPlay</label>
+              <label><input type="checkbox" class="new-car-feature" value="Android Auto" checked /> Android Auto</label>
+              <label><input type="checkbox" class="new-car-feature" value="Heated Seats" checked /> Heated Seats</label>
+              <label><input type="checkbox" class="new-car-feature" value="360 Surround Camera" checked /> 360 Camera</label>
+              <label><input type="checkbox" class="new-car-feature" value="Keyless Entry" checked /> Keyless Entry</label>
+              <label><input type="checkbox" class="new-car-feature" value="Premium Audio Sound" checked /> Premium Audio</label>
+              <label><input type="checkbox" class="new-car-feature" value="GPS Navigation" checked /> GPS Navigation</label>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="wizard-pane" id="wizard-pane-4">
+            <div class="form-group">
+              <label class="form-label">Photo URL</label>
+              <input type="url" id="new-car-img-url" class="form-input" placeholder="https://images.unsplash.com/photo-..." value="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Vehicle Registration Number</label>
+                <input type="text" id="new-car-reg" class="form-input" placeholder="e.g. CA-REG-99120" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Insurance Policy Number</label>
+                <input type="text" id="new-car-insurance" class="form-input" placeholder="e.g. POL-USAA-881902" required />
+              </div>
+            </div>
+            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #fde68a;">
+              🛡️ <strong>Intermediary Agency Notice</strong>: Upon submission, this vehicle will be reviewed by agency auditors to confirm registration and safety compliance before going live to renters.
+            </div>
+          </div>
+
+          <!-- Wizard Controls -->
+          <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+            <button type="button" class="btn btn-outline" id="wizard-prev-btn" style="display: none;">
+              ← Back
+            </button>
+            <div style="margin-left: auto; display: flex; gap: 0.75rem;">
+              <button type="button" class="btn btn-primary" id="wizard-next-btn">
+                Next Step →
+              </button>
+              <button type="submit" class="btn btn-success" id="wizard-submit-btn" style="display: none;">
+                Submit for Agency Verification
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Handover & Inspection Modal -->
+  <div class="modal-overlay" id="handover-modal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 id="handover-modal-title">Trip Check-in & Handover</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="handover-modal-desc" style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          Record vehicle metrics for mutual escrow safety.
+        </p>
+        <form id="handover-submit-form">
+          <input type="hidden" id="handover-trip-id" />
+          <input type="hidden" id="handover-mode" />
+          
+          <div class="form-group">
+            <label class="form-label">Current Odometer (Miles / KM)</label>
+            <input type="number" id="handover-odometer" class="form-input" placeholder="e.g. 15400" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fuel / Battery Level</label>
+            <select id="handover-fuel" class="form-select">
+              <option value="100%">100% (Full)</option>
+              <option value="90%">90%</option>
+              <option value="80%">80%</option>
+              <option value="70%">70%</option>
+              <option value="50%">50%</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Inspection Notes / Condition</label>
+            <textarea id="handover-notes" class="form-textarea" placeholder="Vehicle is clean, tires inspected, zero scratches observed."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="handover-submit-btn" style="width: 100%;">
+            Confirm & Proceed
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Leave Review Modal -->
+  <div class="modal-overlay" id="review-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Verified Trip Review</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="review-modal-car-name" style="font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem;"></p>
+        <form id="review-submit-form">
+          <input type="hidden" id="review-booking-id" />
+          <div class="form-group">
+            <label class="form-label">Overall Rating (1 to 5 Stars)</label>
+            <select id="review-rating" class="form-select">
+              <option value="5">⭐⭐⭐⭐⭐ 5 Stars (Exceptional)</option>
+              <option value="4">⭐⭐⭐⭐ 4 Stars (Very Good)</option>
+              <option value="3">⭐⭐⭐ 3 Stars (Average)</option>
+              <option value="2">⭐⭐ 2 Stars (Below Average)</option>
+              <option value="1">⭐ 1 Star (Poor)</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group">
+              <label class="form-label">Cleanliness</label>
+              <select id="review-cleanliness" class="form-select">
+                <option value="5">5 / 5 Spotless</option>
+                <option value="4">4 / 5 Clean</option>
+                <option value="3">3 / 5 Acceptable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Communication</label>
+              <select id="review-communication" class="form-select">
+                <option value="5">5 / 5 Instant</option>
+                <option value="4">4 / 5 Good</option>
+                <option value="3">3 / 5 Fair</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Written Feedback</label>
+            <textarea id="review-comment" class="form-textarea" placeholder="Share details about the car's performance, cleanliness, and handover experience." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            Submit Review
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Dispute Modal -->
+  <div class="modal-overlay" id="dispute-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Report an Issue to Agency</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          Our Intermediary Agency mediation team will inspect trip telemetry, photos, and messages to adjudicate fairly.
+        </p>
+        <form id="dispute-submit-form">
+          <input type="hidden" id="dispute-trip-id" />
+          <div class="form-group">
+            <label class="form-label">Describe the Issue or Damage</label>
+            <textarea id="dispute-reason" class="form-textarea" placeholder="Detail any discrepancy, host cancellation, mechanical issue, or vehicle damage." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-warning" style="width: 100%;">
+            Submit Dispute Ticket
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Receipt Modal -->
+  <div class="modal-overlay" id="receipt-modal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>Digital Escrow Receipt</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body" id="receipt-modal-content">
+        <!-- Rendered by BookingsController -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Driver KYC Submission Modal -->
+  <div class="modal-overlay" id="kyc-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Driver Identity Verification</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          The Intermediary Agency verifies all driver licenses to maintain trust, safety, and insurance coverage on the platform.
+        </p>
+        <form id="kyc-submit-form">
+          <div class="form-group">
+            <label class="form-label">ID Document Type</label>
+            <select id="kyc-id-type" class="form-select">
+              <option value="Driver License">Driver's License (State / International)</option>
+              <option value="National Passport">National Passport</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Driver License / ID Number</label>
+            <input type="text" id="kyc-license-num" class="form-input" placeholder="e.g. DL-CA-9920194" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Upload Document Photo (JPG, PNG)</label>
+            <input type="file" id="kyc-doc-file" class="form-input" accept="image/*" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            Submit to Agency for Verification
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Document Inspection Modal (Admin) -->
+  <div class="modal-overlay" id="doc-preview-modal">
+    <div class="modal-dialog" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="doc-preview-title">Document Inspection</h3>
+        <button class="modal-close-btn close-modal-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="doc-preview-modal-box">
+          <img id="doc-preview-image" src="" class="doc-preview-img" alt="Document Preview" />
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-muted); text-align: center;">
+          Ensure driver name, license number, and expiration date align with state records.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-subtle); padding: 3rem 0; margin-top: 4rem;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+      <div>
+        <div class="brand-logo" style="margin-bottom: 0.25rem;">
+          <span>RentPeer</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-dim);">
+          Web-Based Peer-to-Peer Car Rental Platform with Intermediary Agency Oversight.
+        </p>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--text-dim);">
+        © 2026 RentPeer Platform. Built with HTML, CSS, JavaScript, Node.js, Express & MongoDB.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/notifications.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cars.js"></script>
+  <script src="/js/bookings.js"></script>
+  <script src="/js/host.js"></script>
+  <script src="/js/admin.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
