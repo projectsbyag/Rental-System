@@ -30,11 +30,11 @@ const AuthController = {
   },
 
   bindEvents() {
-    // Open Auth Modal button
-    const openAuthBtn = document.getElementById('open-auth-modal-btn');
-    if (openAuthBtn) {
-      openAuthBtn.addEventListener('click', () => this.showModal('login'));
-    }
+    // Guest auth actions
+    const openLoginBtn = document.getElementById('open-login-modal-btn');
+    const openSignupBtn = document.getElementById('open-signup-modal-btn');
+    if (openLoginBtn) openLoginBtn.addEventListener('click', () => this.showModal('login'));
+    if (openSignupBtn) openSignupBtn.addEventListener('click', () => this.showModal('register'));
 
     // Modal Close buttons
     const closeBtns = document.querySelectorAll('.close-modal-trigger');

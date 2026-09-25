@@ -42,18 +42,14 @@ const App = {
     if (howItWorksNav) {
       howItWorksNav.addEventListener('click', (e) => {
         e.preventDefault();
-        State.setView('explore');
-        const sec = document.getElementById('how-it-works-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        this.showExploreSection('how-it-works-section');
       });
     }
 
     if (safetyNav) {
       safetyNav.addEventListener('click', (e) => {
         e.preventDefault();
-        State.setView('explore');
-        const sec = document.getElementById('agency-trust-section');
-        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        this.showExploreSection('agency-trust-section');
       });
     }
 
@@ -66,19 +62,19 @@ const App = {
     if (dropdownRenter) {
       dropdownRenter.addEventListener('click', (e) => {
         e.preventDefault();
-        State.setView('renter-dash');
+        this.openPortal('renter');
       });
     }
     if (dropdownHost) {
       dropdownHost.addEventListener('click', (e) => {
         e.preventDefault();
-        State.setView('host-dash');
+        this.openPortal('host');
       });
     }
     if (dropdownAdmin) {
       dropdownAdmin.addEventListener('click', (e) => {
         e.preventDefault();
-        State.setView('admin-dash');
+        this.openPortal('admin');
       });
     }
     if (dropdownKYC) {
@@ -89,26 +85,28 @@ const App = {
       });
     }
 
-    // Role switcher buttons in header
-    const roleRenterBtn = document.getElementById('role-btn-renter');
-    const roleHostBtn = document.getElementById('role-btn-host');
-    const roleAdminBtn = document.getElementById('role-btn-admin');
+  },
 
-    if (roleRenterBtn) {
-      roleRenterBtn.addEventListener('click', () => {
-        State.setView('renter-dash');
-      });
+  showExploreSection(sectionId) {
+    State.setView('explore');
+    window.setTimeout(() => {
+      const section = document.getElementById(sectionId);
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  },
+
+  async openPortal(role) {
+    if (!State.currentUser) {
+      AuthController.showModal('login');
+      return;
     }
-    if (roleHostBtn) {
-      roleHostBtn.addEventListener('click', () => {
-        State.setView('host-dash');
-      });
+
+    if (State.currentUser.role !== role) {
+      await AuthController.handleRoleSwitch(role);
+      return;
     }
-    if (roleAdminBtn) {
-      roleAdminBtn.addEventListener('click', () => {
-        State.setView('admin-dash');
-      });
-    }
+
+    State.setView(`${role}-dash`);
   },
 
   handleUserStateChange(user) {
@@ -181,6 +179,16 @@ const App = {
     }
     if (view === 'admin-dash' && State.currentUser.role !== 'admin') {
       Toast.error('Only agency administrators can access this portal.');
+      State.setView('explore');
+      return;
+    }
+    if (view === 'host-dash' && State.currentUser.role !== 'host') {
+      Toast.error('Switch to a host account to access the host portal.');
+      State.setView('explore');
+      return;
+    }
+    if (view === 'renter-dash' && State.currentUser.role !== 'renter') {
+      Toast.error('Switch to a renter account to access trips and bookings.');
       State.setView('explore');
       return;
     }
