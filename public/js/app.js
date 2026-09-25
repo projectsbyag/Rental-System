@@ -8,21 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const App = {
   init() {
-    // 1. Initialize Sub-Controllers
-    AuthController.init();
+    // 1. Initialize data controllers
     CarsController.init();
     BookingsController.init();
     HostController.init();
     AdminController.init();
 
-    // 2. Wire State Change Listeners
+    // 2. Wire state listeners before restoring an existing session
     State.on('userChanged', (user) => this.handleUserStateChange(user));
     State.on('viewChanged', (view) => this.renderView(view));
 
-    // 3. Navigation Links
+    // 3. Navigation links
     this.bindNavigation();
 
-    // 4. Initial View Render
+    // 4. Initialize authentication after listeners are ready
+    AuthController.init();
+
+    // 5. Initial view render
     this.renderView(State.currentView);
   },
 
@@ -31,25 +33,39 @@ const App = {
     const exploreNav = document.getElementById('nav-explore-btn');
     const howItWorksNav = document.getElementById('nav-how-btn');
     const safetyNav = document.getElementById('nav-safety-btn');
+    const brandHome = document.getElementById('brand-home-link');
+
+    if (brandHome) {
+      brandHome.addEventListener('click', (e) => {
+        e.preventDefault();
+        State.setView('explore');
+        document.getElementById('explore-section')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
 
     if (exploreNav) {
       exploreNav.addEventListener('click', (e) => {
         e.preventDefault();
         State.setView('explore');
+        document.getElementById('explore-section')?.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
     if (howItWorksNav) {
       howItWorksNav.addEventListener('click', (e) => {
         e.preventDefault();
-        this.showExploreSection('how-it-works-section');
+        State.setView('explore');
+        const sec = document.getElementById('how-it-works-section');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
     if (safetyNav) {
       safetyNav.addEventListener('click', (e) => {
         e.preventDefault();
-        this.showExploreSection('agency-trust-section');
+        State.setView('explore');
+        const sec = document.getElementById('agency-trust-section');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
@@ -62,19 +78,23 @@ const App = {
     if (dropdownRenter) {
       dropdownRenter.addEventListener('click', (e) => {
         e.preventDefault();
-        this.openPortal('renter');
+        AuthController.handleRoleSwitch('renter');
       });
     }
     if (dropdownHost) {
       dropdownHost.addEventListener('click', (e) => {
         e.preventDefault();
-        this.openPortal('host');
+        AuthController.handleRoleSwitch('host');
       });
     }
     if (dropdownAdmin) {
       dropdownAdmin.addEventListener('click', (e) => {
         e.preventDefault();
-        this.openPortal('admin');
+        if (State.currentUser?.role === 'admin') {
+          State.setView('admin-dash');
+        } else {
+          Toast.error('Only agency administrators can access this portal.');
+        }
       });
     }
     if (dropdownKYC) {
@@ -85,28 +105,6 @@ const App = {
       });
     }
 
-  },
-
-  showExploreSection(sectionId) {
-    State.setView('explore');
-    window.setTimeout(() => {
-      const section = document.getElementById(sectionId);
-      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
-  },
-
-  async openPortal(role) {
-    if (!State.currentUser) {
-      AuthController.showModal('login');
-      return;
-    }
-
-    if (State.currentUser.role !== role) {
-      await AuthController.handleRoleSwitch(role);
-      return;
-    }
-
-    State.setView(`${role}-dash`);
   },
 
   handleUserStateChange(user) {
@@ -141,6 +139,10 @@ const App = {
       if (guestActions) guestActions.style.display = 'flex';
       if (userMenu) userMenu.style.display = 'none';
       if (roleNavContainer) roleNavContainer.style.display = 'none';
+      const adminRoleButton = document.getElementById('role-btn-admin');
+      const adminMenuItem = document.getElementById('menu-item-admin');
+      if (adminRoleButton) adminRoleButton.style.display = 'none';
+      if (adminMenuItem) adminMenuItem.style.display = 'none';
     }
   },
 
@@ -179,16 +181,6 @@ const App = {
     }
     if (view === 'admin-dash' && State.currentUser.role !== 'admin') {
       Toast.error('Only agency administrators can access this portal.');
-      State.setView('explore');
-      return;
-    }
-    if (view === 'host-dash' && State.currentUser.role !== 'host') {
-      Toast.error('Switch to a host account to access the host portal.');
-      State.setView('explore');
-      return;
-    }
-    if (view === 'renter-dash' && State.currentUser.role !== 'renter') {
-      Toast.error('Switch to a renter account to access trips and bookings.');
       State.setView('explore');
       return;
     }

@@ -19,25 +19,25 @@ const seedDatabase = async () => {
 
     // 1. Create Core Users
     const admin = await User.create({
-      name: 'Intermediary Agency Admin',
+      name: 'Adaeze Okafor',
       email: 'admin@rentpeer.com',
       password: 'admin123',
       role: 'admin',
       phone: '+234 803 000 0001',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
-      bio: 'Chief Operations Officer at RentPeer Intermediary Agency. Overseeing vehicle compliance, trust & safety.',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=250&q=80',
+      bio: 'Operations lead for RentPeer Nigeria. Overseeing vehicle compliance, trust & safety, and host onboarding across major cities.',
       kycStatus: 'verified',
       driverLicenseNumber: 'DL-ADM-994012',
     });
 
     const host1 = await User.create({
-      name: 'Marcus Vance',
+      name: 'Tosin Adebayo',
       email: 'host@rentpeer.com',
       password: 'host123',
       role: 'host',
       phone: '+234 803 000 0002',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80',
-      bio: 'Automotive enthusiast & verified Superhost. I maintain all vehicles with zero-compromise precision.',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=250&q=80',
+      bio: 'Automotive enthusiast and verified Superhost in Lagos. I maintain every vehicle to premium standards for smooth trips.',
       kycStatus: 'verified',
       driverLicenseNumber: 'DL-LAG-8839201',
       rating: 4.95,
@@ -45,13 +45,13 @@ const seedDatabase = async () => {
     });
 
     const host2 = await User.create({
-      name: 'Elena Rostova',
+      name: 'Amina Bello',
       email: 'elena@rentpeer.com',
       password: 'host123',
       role: 'host',
       phone: '+234 803 000 0003',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80',
-      bio: 'Offering premium luxury and EV rentals in Lagos and Abuja. 100% response rate.',
+      avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=250&q=80',
+      bio: 'Luxury and EV host serving Abuja, Lagos, and Port Harcourt. Fast responses and premium booking experience.',
       kycStatus: 'verified',
       driverLicenseNumber: 'DL-ABJ-4402918',
       rating: 5.0,
@@ -59,13 +59,13 @@ const seedDatabase = async () => {
     });
 
     const renter1 = await User.create({
-      name: 'Alex Johnson',
+      name: 'Kelechi Nwosu',
       email: 'renter@rentpeer.com',
       password: 'renter123',
       role: 'renter',
       phone: '+234 803 000 0004',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80',
-      bio: 'Tech consultant and frequent business traveler.',
+      bio: 'Business traveler and weekend road-trip planner across Nigeria.',
       kycStatus: 'verified',
       driverLicenseNumber: 'DL-RIV-9021844',
       rating: 5.0,
@@ -73,13 +73,13 @@ const seedDatabase = async () => {
     });
 
     const renter2 = await User.create({
-      name: 'Samantha Reed',
+      name: 'Ifeoma Eze',
       email: 'sam@rentpeer.com',
       password: 'renter123',
       role: 'renter',
       phone: '+234 803 000 0005',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=250&q=80',
-      bio: 'Weekend explorer and photography enthusiast.',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
+      bio: 'Weekend explorer and photography enthusiast passionate about local road trips and city escapes.',
       kycStatus: 'pending',
       driverLicenseNumber: 'DL-OYO-5519283',
       kycDocuments: {
