@@ -13,7 +13,7 @@ const State = {
     category: 'All',
     transmission: 'All',
     fuelType: 'All',
-    maxPrice: 600,
+    maxPrice: 500000,
     sort: 'recommended',
     startDate: '',
     endDate: '',
