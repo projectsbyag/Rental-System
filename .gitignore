@@ -1,0 +1,43 @@
+ # Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build and coverage output
+dist/
+build/
+coverage/
+*.tmp
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# PHP framework caches
+.phpunit.result.cache
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
